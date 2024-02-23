@@ -1,47 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar, Pressable } from 'react-native';
 import Button from '../../../components/button';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import axios from "axios";
 
 const Product = () => {
     const navigation = useNavigation();
-
+    const route = useRoute();
+    
+    const { productId } = route.params || {};
+    const [product, setProduct] = useState(null);
+    
     const onBack = () => {
         navigation.goBack();
     }
+
+    useEffect(() => {
+        // Fetch data for the specific product using the productId
+        if (productId) {
+            axios.get(`http://192.168.0.9:3000/products/${productId}`)
+                .then(response => setProduct(response.data))
+                .catch(error => {
+                    console.error("Error fetching product details:", error);
+                    setProduct(null);
+                });
+        }
+    }, [productId]);
+
+    if (!product) {
+        return (
+            // You can handle loading state or display an error message here
+            <View>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
     return (
         <View style={styles.container}>
-            <StatusBar translucent backgroundColor="transparent" />
+            {/* Header */}
             <View style={styles.header}>
+                {/* Sử dụng URL hình ảnh từ dữ liệu sản phẩm */}
                 <Image
-                    source={require('../../../assets/images/Mask.png')}
+                    source={{ uri: product.image }}
                     style={styles.headerImage}
                 />
             </View>
 
+            {/* Body */}
             <View style={styles.body}>
-                <Text style={styles.tripInfo}> Minimal Stand</Text>
-                <Text style={{ color: 'black', fontSize: 0, fontWeight: 'bold' }}>$ 50</Text>
-                <Text style={styles.tripTitle} numberOfLines={6} ellipsizeMode="tail">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                </Text>
+                <Text style={styles.tripInfo}>{product.title}</Text>
+                <Text style={styles.tripPrice}>${product.price}</Text>
+                <Text style={styles.tripDescription}>{product.description}</Text>
             </View>
 
+            {/* Footer */}
             <View style={styles.footer}>
+                {/* Favorite button */}
                 <TouchableOpacity style={styles.favorite}>
                     <Image style={styles.iconFavorite} source={require('../../../assets/tabs/bookmark_active.png')} />
                 </TouchableOpacity>
+                {/* Contact Seller button */}
                 <Button style={styles.button} title='Contact Seller' />
             </View>
-            <TouchableOpacity style={{ ...styles.headerIcon }} onPress={onBack}>
-                <TouchableOpacity onPress={onBack}>
-                    <Image style={styles.back} source={require('../../../assets/icons/logout_left.png')} />
-                </TouchableOpacity>
+
+            {/* Back button */}
+            <TouchableOpacity style={styles.headerIcon} onPress={onBack}>
+                <Image style={styles.back} source={require('../../../assets/icons/logout_left.png')} />
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 const styles = StyleSheet.create({
     container: {

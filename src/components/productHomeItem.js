@@ -7,14 +7,14 @@ const ProductHomeItem = ({title, price, image, onPress}) =>{
         <Pressable onPress={onPress} style={styles.container}>
             <Image style={styles.image} source={{uri: image}}/>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.price}>{price}</Text>
+            <Text style={styles.price}>$ {price}</Text>
         </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        margin: 8
+        margin: 8,
     },
     title: {
         color: '#606060',

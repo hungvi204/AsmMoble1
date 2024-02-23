@@ -12,7 +12,7 @@ const Profile = () => {
     };
 
     const onSettings = () => {
-        navigation.navigate("Product");
+        navigation.navigate("Settings");
     };
 
     const onNewListings = () => {
