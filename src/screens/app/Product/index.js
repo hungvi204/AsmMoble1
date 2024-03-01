@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar, Pressable } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, StatusBar, Pressable, Alert } from 'react-native';
 import Button from '../../../components/button';
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
@@ -10,15 +10,41 @@ const Product = () => {
     
     const { productId } = route.params || {};
     const [product, setProduct] = useState(null);
-    
+    const [isFavorite, setIsFavorite] = useState(false);
+
     const onBack = () => {
         navigation.goBack();
     }
 
+    const addToFavorites = () => {
+        // Kiểm tra xem sản phẩm đã có trong danh sách yêu thích chưa
+        if (!isFavorite) {
+            const requestData = {
+                productId: product.id,
+                title: product.title,
+                image: product.image,
+                price: product.price
+            };
+    
+            axios.post('http://192.168.11.1:3000/favorites', requestData)
+                .then(response => {
+                    setIsFavorite(true);
+                    Alert.alert('Thành công', 'Thêm sản phẩm thành công!');
+                })
+                .catch(error => {
+                    console.error("Error adding to favorites:", error);
+                });
+        } else {
+            Alert.alert('Info', 'Sản phẩm đã có trong mục yêu thích!');
+        }
+    };
+    
+    
+
     useEffect(() => {
-        // Fetch data for the specific product using the productId
+        // Lấy dữ liệu cho sản phẩm cụ thể bằng ProductId
         if (productId) {
-            axios.get(`http://192.168.0.9:3000/products/${productId}`)
+            axios.get(`http://192.168.11.1:3000/products/${productId}`)
                 .then(response => setProduct(response.data))
                 .catch(error => {
                     console.error("Error fetching product details:", error);
@@ -29,12 +55,12 @@ const Product = () => {
 
     if (!product) {
         return (
-            // You can handle loading state or display an error message here
             <View>
                 <Text>Loading...</Text>
             </View>
         );
     }
+    
     return (
         <View style={styles.container}>
             {/* Header */}
@@ -56,7 +82,7 @@ const Product = () => {
             {/* Footer */}
             <View style={styles.footer}>
                 {/* Favorite button */}
-                <TouchableOpacity style={styles.favorite}>
+                <TouchableOpacity style={styles.favorite} onPress={addToFavorites}>
                     <Image style={styles.iconFavorite} source={require('../../../assets/tabs/bookmark_active.png')} />
                 </TouchableOpacity>
                 {/* Contact Seller button */}

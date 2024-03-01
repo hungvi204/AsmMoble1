@@ -17,6 +17,7 @@ const Input = ({ label, placeholder, isPassword,value, onChangeText }) => {
                     style={styles.input}
                     value={value}
                     onChangeText={onChangeText}
+    
                 />
                 {isPassword ? (
                     <Pressable onPress={onEyePress}>

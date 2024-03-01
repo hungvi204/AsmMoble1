@@ -10,6 +10,7 @@ import GoogleLogin from "../../../components/googleLogin";
 import axios from "axios";
 
 const SignIn = ({ navigation }) => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -37,6 +38,7 @@ const SignIn = ({ navigation }) => {
         try {
             const response = await axios.get('https://65d466d93f1ab8c634350653.mockapi.io/signup', {
                 params: {
+                    name: name,
                     email: email,
                     password: password
                 }
@@ -44,6 +46,7 @@ const SignIn = ({ navigation }) => {
     
             if (response.status === 200 && response.data) {
                 Alert.alert('Thành công', 'Đăng nhập thành công');
+                
                 navigation.navigate('Tabs');
             } else {
                 Alert.alert('Lỗi', 'Đăng nhập thất bại');
@@ -66,7 +69,7 @@ const SignIn = ({ navigation }) => {
             <Input
                 label='Email'
                 placeholder='example@gmail.com'
-                value={email}
+                value={email.toString()}
                 onChangeText={text => setEmail(text)}
             />
 
@@ -74,7 +77,7 @@ const SignIn = ({ navigation }) => {
                 label='Password'
                 placeholder='*******'
                 isPassword
-                value={password}
+                value={password.toString()}
                 onChangeText={text => setPassword(text)}
             />
             <Button style={styles.button} title='Sign In' onPress={handleSignIn}></Button>

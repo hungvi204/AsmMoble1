@@ -48,7 +48,7 @@ const Tabs = () => {
         >
             <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Tab.Screen name="Favorites" component={Favorites} options={{ headerShown: false }} />
-            <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+            <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false } } />
             {/* thay đổi component */}
         </Tab.Navigator>
     );
@@ -63,7 +63,7 @@ const App = () => {
             <>
               <Stack.Screen name='Tabs' component={Tabs} options={{ headerShown: false }} />
             </>
-          ) : (
+          ) : (   
             <>
               <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
               <Stack.Screen name='SignIn' component={SignIn} options={{ headerShown: false }} />

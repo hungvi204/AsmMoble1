@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, Image, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../../../components/button";
+import axios from "axios";
 
-const Profile = () => {
+const Profile = ({route}) => {
     const navigation = useNavigation();
-
+    
+    
     const onMyListings = () => {
         navigation.navigate("MyListings");
     };

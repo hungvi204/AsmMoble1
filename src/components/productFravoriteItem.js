@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Pressable, StyleSheet, Text, Dimensions, View } from "react-native"
 const { width } = Dimensions.get('window'); //lấy thông tin kích thước thiết bị
 
-const ProductFravoriteItem = ({ title, price, image, onPress }) => {
+const ProductFravoriteItem = ({id, title, price, image, onPress, onDelete }) => {
     return (
         <Pressable onPress={onPress} style={styles.container}>
             <Image style={styles.image} source={{ uri: image }} />
@@ -10,7 +10,7 @@ const ProductFravoriteItem = ({ title, price, image, onPress }) => {
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.price}>{price}</Text>
             </View>
-            <Pressable style={styles.deleteIcon}>
+            <Pressable onPress={() => onDelete(id)} style={styles.deleteIcon}>
                 <Image style={styles.icon} source={require('../assets/icons/Shape.png')} />
             </Pressable>
         </Pressable>

@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Pressable, StyleSheet, Text, Dimensions, View } from "react-native"
 const { width } = Dimensions.get('window'); //lấy thông tin kích thước thiết bị
 
-const ProductProfileItem = ({ title, price, image, onPress }) => {
+const ProductProfileItem = ({ title, price, image, onPress, onDelete, id }) => {
     return (
         <Pressable onPress={onPress} style={styles.container}>
             <Image style={styles.image} source={{ uri: image }} />
@@ -10,7 +10,7 @@ const ProductProfileItem = ({ title, price, image, onPress }) => {
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.price}>{price}</Text>
             </View>
-            <Pressable style={styles.deleteIcon}>
+            <Pressable style={styles.deleteIcon} onPress={() => onDelete(id)}>
                 <Image style={styles.icon} source={require('../assets/icons/Vector.png')} />
             </Pressable>
         </Pressable>
